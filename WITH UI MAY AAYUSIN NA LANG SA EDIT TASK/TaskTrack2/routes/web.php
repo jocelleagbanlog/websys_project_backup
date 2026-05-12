@@ -1,0 +1,152 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{
+    AuthController,
+    RegisterController,
+    DashboardController,
+    ProjectController,
+    TaskController,
+    SubtaskController,
+    SubtaskAttachmentController,
+    ProjectMemberController
+};
+
+/*
+|--------------------------------------------------------------------------
+| WEB ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
+
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATION
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| REGISTER
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])
+    ->name('register');
+
+Route::post('/register', [RegisterController::class, 'register']);
+
+/*
+|--------------------------------------------------------------------------
+| PROTECTED ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROJECTS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('projects', ProjectController::class)->only([
+        'index',
+        'create',
+        'store',
+        'show',
+        'edit',
+        'update',
+        'destroy'
+    ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROJECT MEMBERS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('projects/{project}/members', [ProjectMemberController::class, 'store'])
+        ->name('projects.members.store');
+
+    /*
+    |--------------------------------------------------------------------------
+    | TASKS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('projects/{project}/tasks', [TaskController::class, 'store'])
+        ->name('projects.tasks.store');
+
+    Route::put('projects/{project}/tasks/{task}', [TaskController::class, 'update'])
+        ->name('projects.tasks.update');
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUBTASKS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('tasks/{task}/subtasks', [SubtaskController::class, 'store'])
+        ->name('tasks.subtasks.store');
+
+    Route::put('tasks/{task}/subtasks/{subtask}', [SubtaskController::class, 'update'])
+        ->name('tasks.subtasks.update');
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUBTASK ATTACHMENTS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('subtasks/{subtask}/attachments', [SubtaskAttachmentController::class, 'store'])
+    ->name('subtasks.attachments.store');
+
+    // TASK EDIT
+    Route::get('/projects/{project}/tasks/{task}/edit', 
+        [TaskController::class, 'edit']
+    )->name('projects.edit_tasks');
+
+    // TASK UPDATE
+    Route::put('/projects/{project}/tasks/{task}', [TaskController::class, 'update'])
+        ->name('projects.tasks.update');
+
+    // TASK DELETE
+    Route::delete('/projects/{project}/tasks/{task}', [TaskController::class, 'destroy'])
+        ->name('tasks.destroy');
+
+    // ATTACHMENT DELETE
+    Route::delete('/subtask-attachments/{attachment}', [SubtaskAttachmentController::class, 'destroy'])
+        ->name('subtasks.attachments.destroy');
+
+    
+});
+// Route::get('projects/{project}/tasks/{task}/edit', [TaskController::class, 'edit'])
+//     ->name('projects.tasks.edit');
+
+// Route::put('projects/{project}/tasks/{task}', [TaskController::class, 'update'])
+//     ->name('projects.tasks.update');
+
+// Route::delete('projects/{project}/tasks/{task}', [TaskController::class, 'destroy'])
+//     ->name('projects.tasks.destroy');
+
