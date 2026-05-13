@@ -38,16 +38,16 @@ class Subtask extends Model
     }
 
     protected static function booted()
-{
-    static::saving(function ($subtask) {
+    {
+        static::saving(function ($subtask) {
 
-        if ($subtask->status === 'completed' && !$subtask->completed_at) {
-            $subtask->completed_at = now();
-        }
+            if ($subtask->status === 'completed' && !$subtask->completed_at) {
+                $subtask->completed_at = now();
+            }
 
-        if ($subtask->status !== 'completed') {
-            $subtask->completed_at = null;
-        }
-    });
-}
+            if ($subtask->status !== 'completed') {
+                $subtask->completed_at = null;
+            }
+        });
+    }
 }

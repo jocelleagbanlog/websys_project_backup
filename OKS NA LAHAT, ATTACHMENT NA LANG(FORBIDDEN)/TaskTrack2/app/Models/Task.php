@@ -31,7 +31,6 @@ class Task extends Model
         return $this->hasMany(Subtask::class);
     }
 
-    // Computed progress
     public function getCompletionPercentageAttribute()
     {
         $total = $this->subtasks()->count();
@@ -46,16 +45,16 @@ class Task extends Model
     }
 
     protected static function booted()
-{
-    static::saving(function ($task) {
+    {
+        static::saving(function ($task) {
 
-        if ($task->status === 'completed' && !$task->completed_at) {
-            $task->completed_at = now();
-        }
+            if ($task->status === 'completed' && !$task->completed_at) {
+                $task->completed_at = now();
+            }
 
-        if ($task->status !== 'completed') {
-            $task->completed_at = null;
-        }
-    });
-}
+            if ($task->status !== 'completed') {
+                $task->completed_at = null;
+            }
+        });
+    }
 }

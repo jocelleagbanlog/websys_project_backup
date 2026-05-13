@@ -480,17 +480,17 @@
 
             {{-- DELETE --}}
             <form method="POST"
-                  action="{{ route('projects.destroy', [$project, $task]) }}"
-                  onsubmit="return confirm('Delete this task?')">
+      action="{{ route('tasks.destroy', [$project->id, $task->id]) }}"
+      onsubmit="return confirm('Delete this task?')">
 
-                @csrf
-                @method('DELETE')
+    @csrf
+    @method('DELETE')
 
-                <button type="submit"
-                        class="w-full text-left px-4 py-2 text-sm delete-text hover:bg-gray-100">
-                    Delete
-                </button>
-            </form>
+    <button type="submit"
+            class="w-full text-left px-4 py-2 text-sm delete-text hover:bg-gray-100">
+        Delete
+    </button>
+</form>
         </div>
     </div>
 </div>
