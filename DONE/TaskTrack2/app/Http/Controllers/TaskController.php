@@ -120,7 +120,7 @@ public function update(Request $request, Project $project, Task $task)
     }
 
     return redirect()->route('projects.show', $project)
-        ->with('success', 'Task updated successfully.');
+    ->with('updated', 'Task updated successfully.');
 }
 
     public function edit($projectId, $taskId)
@@ -142,7 +142,7 @@ public function destroy(Project $project, Task $task)
     $task->delete();
 
     return redirect()->route('projects.show', $project)
-        ->with('success', 'Task deleted successfully.');
+    ->with('deleted', 'Task deleted successfully.');
 }
 
 

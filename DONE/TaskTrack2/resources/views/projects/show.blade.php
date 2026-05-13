@@ -125,6 +125,20 @@
 }
 </style>
 
+@if(session('updated'))
+    <div class="px-4 py-2 rounded mb-4 text-white"
+         style="background: linear-gradient(135deg,#28a745,#5cbf88);">
+        {{ session('updated') }}
+    </div>
+@endif
+
+@if(session('deleted'))
+    <div class="px-4 py-2 rounded mb-4 text-white"
+         style="background: linear-gradient(135deg,#dc3545,#e57373);">
+        {{ session('deleted') }}
+    </div>
+@endif
+
 {{-- PROJECT HEADER --}}
 <div class="card p-4 mb-4">
     <div class="flex justify-between items-center">
